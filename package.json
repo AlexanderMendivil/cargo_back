@@ -2,10 +2,10 @@
   "name": "cargo_back",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/app.js",
+  "main": "dist/src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "tsc && node dist/app.js",
+    "start:dev": "tsc && nodemon dist/src/app.js",
     "lint": "eslint . --ext .ts"
   },
   "keywords": [],
@@ -19,9 +19,13 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1",
+    "nodemon": "^2.0.21",
+    "ts-node": "^10.9.1",
     "typescript": "^4.9.5"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mysql2": "^3.2.0"
   }
 }
