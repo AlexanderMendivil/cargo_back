@@ -1,9 +1,12 @@
+require('dotenv').config();
 import express from 'express'
-const app = express()
-const port = 3000
+import { getData } from '../DBConfig'
+const app = express();
+const port = process.env.PORT;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+app.get('/', async (req, res) => {
+  const data = await getData();
+  res.send(data);
 })
 
 app.listen(port, () => {
