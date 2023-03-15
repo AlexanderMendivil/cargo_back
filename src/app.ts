@@ -1,12 +1,21 @@
 require('dotenv').config();
+import cors from "cors";
 import express from 'express'
-import { getData } from '../DBConfig'
+import { getDailyEvent } from '../DBConfig'
 const app = express();
 const port = process.env.PORT;
 
-app.get('/', async (req, res) => {
-  const data = await getData();
-  res.send(data);
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+app.post('/dailyVehicles', async (req, res) => {
+  try{
+    const data = await getDailyEvent(req.body.date);
+    res.send(data);
+  }catch(e){
+    res.send({"message": "500 error"});
+  }
 })
 
 app.listen(port, () => {
