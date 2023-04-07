@@ -14,6 +14,7 @@ app.post('/dailyVehicles', async (req, res) => {
     const data = await getDailyEvent(req.body.date);
     res.send(data);
   }catch(e){
+    console.log(e)
     res.send({"message": "500 error"});
   }
 })
