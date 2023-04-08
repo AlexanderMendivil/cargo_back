@@ -20,6 +20,8 @@ export const getDailyEvent = async (date: string) => {
 
    const inactiveVehicles: Vehicle[] = [];
    const activeVehicles: Vehicle[] = [];
+
+   // Agregar los vehiculos por inactivos y activos
    for(let i = 0; i < catMovilList.length; i++){
 
       if(checkList.length > 0){
@@ -39,6 +41,8 @@ export const getDailyEvent = async (date: string) => {
    }
 
    const duplicatedVehicles: Vehicle[] = [];
+
+   //Recolecta los duplicados que existan entre la lista de activos e innactivos
    for(let i = 0; i <= inactiveVehicles.length-1; i++){
       for(let j = 0; j < activeVehicles.length; j++){
          if(inactiveVehicles[i].id === activeVehicles[j].id && inactiveVehicles[i].vehicleId === activeVehicles[j].vehicleId && inactiveVehicles[i].vehicleType === activeVehicles[j].vehicleType && inactiveVehicles[i].area === activeVehicles[j].area){
@@ -47,9 +51,12 @@ export const getDailyEvent = async (date: string) => {
       }
    }
 
+   // Remueve los duplicados en la lista de inactivos que aparezcan en la lista de activos
    const filteredDuplicatedVehicles = inactiveVehicles.filter(vehicle => !duplicatedVehicles.includes(vehicle));
 
    const cleanedInactiveVehicles: Vehicle[] = [];
+
+   // Remueva los inactivos duplicados que aparezcan en la lista de inactivos
    for(let i = 0; i < filteredDuplicatedVehicles.length; i++){
       for(let j = 0; j < filteredDuplicatedVehicles.length -1; j++){
          if( filteredDuplicatedVehicles[i].id === filteredDuplicatedVehicles[j].id && filteredDuplicatedVehicles[i].vehicleId === filteredDuplicatedVehicles[j].vehicleId && filteredDuplicatedVehicles[i].vehicleType === filteredDuplicatedVehicles[j].vehicleType && filteredDuplicatedVehicles[i].area === filteredDuplicatedVehicles[j].area && filteredDuplicatedVehicles[i].status === filteredDuplicatedVehicles[j].status && filteredDuplicatedVehicles[i].identifier !== filteredDuplicatedVehicles[j].identifier){
@@ -62,6 +69,8 @@ export const getDailyEvent = async (date: string) => {
          }
       }
    }
+
+   //Regresa el array con la lista de activos e inactivos ya limpiada
    return [...activeVehicles, ...cleanedInactiveVehicles];
 }
 
