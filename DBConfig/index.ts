@@ -44,7 +44,33 @@ export const getDailyEvent = async (date: string) => {
    for(let i = 0; i < catMovilList.length; i++){
       inactiveVehicles.push({ id: catMovilList[i].id, vehicleType: catMovilList[i].tipo_equipo, vehicleId: catMovilList[i].equipo_movil, area: catMovilList[i].area, employee: '---', status: false, identifier: uuidv4() });
    }
-   return [...activeVehicles, ...inactiveVehicles];
+
+   const duplicatedVehicles: Vehicle[] = [];
+
+   //Recolecta los duplicados que existan entre la lista de activos e innactivos
+   for(let i = 0; i <= inactiveVehicles.length-1; i++){
+      for(let j = 0; j < activeVehicles.length; j++){
+         if(inactiveVehicles[i].id === activeVehicles[j].id && inactiveVehicles[i].vehicleId === activeVehicles[j].vehicleId && inactiveVehicles[i].vehicleType === activeVehicles[j].vehicleType && inactiveVehicles[i].area === activeVehicles[j].area){
+            duplicatedVehicles.push(inactiveVehicles[i]);
+         }
+      }
+   }
+
+   
+   // Remueve los duplicados en la lista de inactivos que aparezcan en la lista de activos
+   const filteredDuplicatedVehicles = inactiveVehicles.filter(vehicle => !duplicatedVehicles.includes(vehicle));
+
+   const cleanedInactiveVehicles: Vehicle[] = [];
+   // Remueva los inactivos duplicados que aparezcan en la lista de inactivos
+   for(let i = 0; i < filteredDuplicatedVehicles.length; i++){
+      for(let j = 0; j < filteredDuplicatedVehicles.length -1; j++){
+         if( filteredDuplicatedVehicles[i].id === filteredDuplicatedVehicles[j].id && filteredDuplicatedVehicles[i].vehicleId === filteredDuplicatedVehicles[j].vehicleId && filteredDuplicatedVehicles[i].vehicleType === filteredDuplicatedVehicles[j].vehicleType && filteredDuplicatedVehicles[i].area === filteredDuplicatedVehicles[j].area && filteredDuplicatedVehicles[i].status === filteredDuplicatedVehicles[j].status && filteredDuplicatedVehicles[i].identifier !== filteredDuplicatedVehicles[j].identifier){
+            break; 
+         }
+         cleanedInactiveVehicles.push(filteredDuplicatedVehicles[j]);         
+      }
+   }
+            return [...activeVehicles, ...cleanedInactiveVehicles];
 }
 
   
